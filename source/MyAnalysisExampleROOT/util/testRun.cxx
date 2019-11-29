@@ -1,0 +1,61 @@
+#include "xAODRootAccess/Init.h" 
+#include "SampleHandler/SampleHandler.h"
+#include "SampleHandler/ScanDir.h"
+#include "SampleHandler/ToolsDiscovery.h"
+#include "EventLoop/Job.h"
+#include "EventLoop/DirectDriver.h"
+#include "SampleHandler/DiskListLocal.h"
+#include "MyAnalysisExampleROOT/MyAnalysisAlg.h"
+#include <TSystem.h>
+#include <EventLoopAlgs/NTupleSvc.h> 
+#include <EventLoop/OutputStream.h>
+ 
+int main( int argc, char* argv[] ) {
+//  const char* sample = "testSample";
+  const char* condition = "MaskBL";   
+
+  // Take the submit directory from the input if provided:
+  std::string submitDir = "submitDir"; if( argc > 1 ) submitDir = argv[ 1 ];
+
+  // Set up the job for xAOD access:
+  xAOD::Init().ignore();
+
+  // Construct the samples to run on:
+  SH::SampleHandler sh;
+
+  // use SampleHandler to scan all of the subdirectories of a directory for particular MC single file:
+  const char* inputFilePath = gSystem->ExpandPathName 
+//  ("/gpfs/fs2001/nobe/data2086b/sample_forTutorial2016/data16_13TeV.00310247.physics_Main.merge.DAOD_HIGG2D4.f755_m1699_p2880/");
+//  ("/gpfs/home/rushioda/reference/");
+  (Form("/home/rushioda/DATA2/ttbarAOD/%s/", condition));
+  SH::ScanDir().filePattern("*AOD.pool.root*").scan(sh,inputFilePath);
+
+
+
+  // Set the name of the input TTree. It's always "CollectionTree" // for xAOD files.
+  sh.setMetaString( "nc_tree", "CollectionTree" );
+
+  // Print what we found:
+  sh.print();
+
+  // Create an EventLoop job:
+  EL::Job job; job.sampleHandler( sh );
+  job.options()->setDouble (EL::Job::optMaxEvents, -1); // maximum number of events to be analyzed. If you want to see all events, please set it to -1
+
+
+  // define an output and an ntuple associated to that output
+  EL::OutputStream output("myOutput");
+  job.outputAdd (output);
+  EL::NTupleSvc *ntuple = new EL::NTupleSvc("myOutput");
+  job.algsAdd (ntuple);
+   	
+
+  // Add our analysis to the job:
+  MyAnalysisAlg* alg = new MyAnalysisAlg (); job.algsAdd( alg );
+  alg->outputName = "myOutput"; // give the name of the output to our algorithm
+
+  // Run the job using the local/direct driver:
+  EL::DirectDriver driver; driver.submit( job, submitDir );
+
+  return 0; 
+}

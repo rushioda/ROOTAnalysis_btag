@@ -30,7 +30,7 @@ atlas_add_library( MyAnalysisExampleROOT
    MyAnalysisExampleROOT/*.h Root/*.h Root/*.cxx ${_dictionarySource}
    INCLUDE_DIRS ${ROOT_INCLUDE_DIRS}
    PUBLIC_HEADERS MyAnalysisExampleROOT
-   LINK_LIBRARIES ${ROOT_LIBRARIES} AsgTools EventLoop xAODBase xAODRootAccess xAODEventInfo xAODMuon xAODTruth MCTruthClassifierLib EventLoopAlgs InDetTrackSelectionToolLib )
+   LINK_LIBRARIES ${ROOT_LIBRARIES} AsgTools EventLoop xAODBase xAODRootAccess xAODEventInfo xAODMuon xAODTruth MCTruthClassifierLib EventLoopAlgs InDetTrackSelectionToolLib xAODJet)
 
 # Executable
 atlas_add_executable( testRun

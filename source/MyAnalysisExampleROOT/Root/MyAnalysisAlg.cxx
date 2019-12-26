@@ -181,7 +181,37 @@ EL::StatusCode MyAnalysisAlg :: histInitialize ()
   tree->Branch("TrackPhi", &m_TrackPhi); 
   m_TrackCharge = new std::vector<std::vector<double> >; 
   tree->Branch("TrackCharge", &m_TrackCharge); 
-
+  m_TrackSignd0 = new std::vector<std::vector<float> >; 
+  tree->Branch("TrackSignd0", &m_TrackSignd0); 
+  m_TrackSignz0 = new std::vector<std::vector<float> >; 
+  tree->Branch("TrackSignz0", &m_TrackSignz0); 
+  m_TrackSignd0sig = new std::vector<std::vector<float> >; 
+  tree->Branch("TrackSignd0sig", &m_TrackSignd0sig); 
+  m_TrackSignz0sig = new std::vector<std::vector<float> >; 
+  tree->Branch("TrackSignz0sig", &m_TrackSignz0sig); 
+  m_V0Track = new std::vector<std::vector<bool> >; 
+  tree->Branch("V0Track", &m_V0Track); 
+  m_nPixelHits = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nPixelHits", &m_nPixelHits); 
+  m_nSCTHits = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nSCTHits", &m_nSCTHits); 
+  m_nPixelDead = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nPixelDead", &m_nPixelDead); 
+  m_nSCTDead = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nSCTDead", &m_nSCTDead); 
+  m_nPixelHoles = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nPixelHoles", &m_nPixelHoles); 
+  m_nSCTHoles = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nSCTHoles", &m_nSCTHoles); 
+  m_nPixelShared = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nPixelShared", &m_nPixelShared); 
+  m_nSCTShared = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nSCTShared", &m_nSCTShared); 
+  m_nIBLHits = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nIBLHits", &m_nIBLHits); 
+  m_nBLHits = new std::vector<std::vector<unsigned char> >; 
+  tree->Branch("nBLHits", &m_nBLHits); 
+ 
   //Truth
   m_TruthPt = new std::vector<std::vector<double> >; 
   tree->Branch("TruthPt", &m_TruthPt); 
@@ -321,7 +351,22 @@ EL::StatusCode MyAnalysisAlg :: execute ()
   m_TrackEta->clear();
   m_TrackPhi->clear();
   m_TrackCharge->clear();
-
+  m_TrackSignd0->clear();
+  m_TrackSignz0->clear();
+  m_TrackSignd0sig->clear();
+  m_TrackSignz0sig->clear();
+  m_V0Track->clear();
+  m_nPixelHits->clear();
+  m_nSCTHits->clear();
+  m_nPixelDead->clear();
+  m_nSCTDead->clear();
+  m_nPixelHoles->clear();
+  m_nSCTHoles->clear();
+  m_nPixelShared->clear();
+  m_nSCTShared->clear();
+  m_nIBLHits->clear();
+  m_nBLHits->clear();
+ 
   m_TruthPt->clear();
   m_TruthEta->clear();
   m_TruthPhi->clear();
@@ -398,6 +443,22 @@ EL::StatusCode MyAnalysisAlg :: execute ()
       std::vector<double> trackEta;
       std::vector<double> trackPhi;
       std::vector<double> trackCharge;
+      std::vector<float> trackSignd0;
+      std::vector<float> trackSignz0;
+      std::vector<float> trackSignd0sig;
+      std::vector<float> trackSignz0sig;
+      std::vector<bool> V0track;
+      std::vector<unsigned char> numPixelHits;
+      std::vector<unsigned char> numSCTHits;
+      std::vector<unsigned char> numPixelDead;
+      std::vector<unsigned char> numSCTDead;
+      std::vector<unsigned char> numPixelHoles;
+      std::vector<unsigned char> numSCTHoles;
+      std::vector<unsigned char> numPixelShared;
+      std::vector<unsigned char> numSCTShared;
+      std::vector<unsigned char> numIBLHits;
+      std::vector<unsigned char> numBLHits;
+
       std::vector<double> truthPt;
       std::vector<double> truthEta;
       std::vector<double> truthPhi;
@@ -420,6 +481,23 @@ EL::StatusCode MyAnalysisAlg :: execute ()
         trackEta.push_back(trk_IP3D->eta());
         trackPhi.push_back(trk_IP3D->phi());
         trackCharge.push_back(trk_IP3D->charge());
+
+        trackSignd0 = btag->auxdata<std::vector<float>>("IP3D_valD0wrtPVofTracks");
+        trackSignz0 = btag->auxdata<std::vector<float>>("IP3D_valZ0wrtPVofTracks");
+        trackSignd0sig = btag->auxdata<std::vector<float>>("IP3D_sigD0wrtPVofTracks");
+        trackSignz0sig = btag->auxdata<std::vector<float>>("IP3D_sigZ0wrtPVofTracks");
+        V0track = btag->auxdata<std::vector<bool>>("IP3D_flagFromV0ofTracks");
+        numPixelHits.push_back(trk_IP3D->auxdata<unsigned char>("numberOfPixelHits"));
+        numSCTHits.push_back(trk_IP3D->auxdata<unsigned char>("numberOfSCTHits"));
+        numPixelDead.push_back(trk_IP3D->auxdata<unsigned char>("numberOfPixelDeadSensors"));
+        numSCTDead.push_back(trk_IP3D->auxdata<unsigned char>("numberOfSCTDeadSensors"));
+        numPixelHoles.push_back(trk_IP3D->auxdata<unsigned char>("numberOfPixelHoles"));
+        numSCTHoles.push_back(trk_IP3D->auxdata<unsigned char>("numberOfSCTHoles"));
+        numPixelShared.push_back(trk_IP3D->auxdata<unsigned char>("numberOfPixelSharedHits"));
+        numSCTShared.push_back(trk_IP3D->auxdata<unsigned char>("numberOfSCTSharedHits"));
+        numIBLHits.push_back(trk_IP3D->auxdata<unsigned char>("numberOfInnermostPixelLayerHits"));
+        numBLHits.push_back(trk_IP3D->auxdata<unsigned char>("numberOfNextToInnermostPixelLayerHits"));
+
 //-----test----------
         
         /* 
@@ -550,6 +628,21 @@ EL::StatusCode MyAnalysisAlg :: execute ()
       m_TrackEta->push_back(trackEta); 
       m_TrackPhi->push_back(trackPhi); 
       m_TrackCharge->push_back(trackCharge); 
+      m_TrackSignd0->push_back(trackSignd0); 
+      m_TrackSignz0->push_back(trackSignz0); 
+      m_TrackSignd0sig->push_back(trackSignd0sig); 
+      m_TrackSignz0sig->push_back(trackSignz0sig); 
+      m_V0Track->push_back(V0track);
+      m_nPixelHits->push_back(numPixelHits); 
+      m_nSCTHits->push_back(numSCTHits); 
+      m_nPixelDead->push_back(numPixelDead); 
+      m_nSCTDead->push_back(numSCTDead); 
+      m_nPixelHoles->push_back(numPixelHoles); 
+      m_nSCTHoles->push_back(numSCTHoles); 
+      m_nPixelShared->push_back(numPixelShared); 
+      m_nSCTShared->push_back(numSCTShared); 
+      m_nIBLHits->push_back(numIBLHits); 
+      m_nBLHits->push_back(numBLHits); 
 
       m_TruthPt->push_back(truthPt); 
       m_TruthEta->push_back(truthEta); 
@@ -566,6 +659,22 @@ EL::StatusCode MyAnalysisAlg :: execute ()
       trackEta.clear();
       trackPhi.clear();
       trackCharge.clear();
+      trackSignd0.clear(); 
+      trackSignz0.clear(); 
+      trackSignd0sig.clear(); 
+      trackSignz0sig.clear(); 
+      V0track.clear();
+      numPixelHits.clear(); 
+      numSCTHits.clear(); 
+      numPixelDead.clear(); 
+      numSCTDead.clear(); 
+      numPixelHoles.clear(); 
+      numSCTHoles.clear(); 
+      numPixelShared.clear(); 
+      numSCTShared.clear(); 
+      numIBLHits.clear(); 
+      numBLHits.clear(); 
+
       truthPt.clear();
       truthEta.clear();
       truthPhi.clear();
@@ -673,6 +782,21 @@ EL::StatusCode MyAnalysisAlg :: finalize ()
   delete m_TrackEta; m_TrackEta = 0; 
   delete m_TrackPhi; m_TrackPhi = 0; 
   delete m_TrackCharge; m_TrackCharge = 0; 
+  delete m_TrackSignd0; m_TrackSignd0 = 0; 
+  delete m_TrackSignz0; m_TrackSignz0 = 0; 
+  delete m_TrackSignd0sig; m_TrackSignd0sig = 0; 
+  delete m_TrackSignz0sig; m_TrackSignz0sig = 0;
+  delete m_V0Track; m_V0Track = 0;
+  delete m_nPixelHits; m_nPixelHits = 0;
+  delete m_nSCTHits; m_nSCTHits = 0;
+  delete m_nPixelDead; m_nPixelDead = 0;
+  delete m_nSCTDead; m_nSCTDead = 0;
+  delete m_nPixelHoles; m_nPixelHoles = 0;
+  delete m_nSCTHoles; m_nSCTHoles = 0;
+  delete m_nPixelShared; m_nPixelShared = 0;
+  delete m_nSCTShared; m_nSCTShared = 0;
+  delete m_nIBLHits; m_nIBLHits = 0;
+  delete m_nBLHits; m_nBLHits = 0;
 
   delete m_TruthPt; m_TruthPt = 0; 
   delete m_TruthEta; m_TruthEta = 0; 

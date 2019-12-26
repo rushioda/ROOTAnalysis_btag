@@ -12,7 +12,7 @@
  
 int main( int argc, char* argv[] ) {
 //  const char* sample = "testSample";
-  const char* condition = "MaskIBL";   
+  const char* condition = "MaskL2";   
 
   // Take the submit directory from the input if provided:
   std::string submitDir = "submitDir"; if( argc > 1 ) submitDir = argv[ 1 ];

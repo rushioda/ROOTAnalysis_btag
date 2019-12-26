@@ -87,6 +87,21 @@ public:
   std::vector<std::vector<double> > *m_TrackEta; //!
   std::vector<std::vector<double> > *m_TrackPhi; //!
   std::vector<std::vector<double> > *m_TrackCharge; //!
+  std::vector<std::vector<float> > *m_TrackSignd0; //!
+  std::vector<std::vector<float> > *m_TrackSignz0; //!
+  std::vector<std::vector<float> > *m_TrackSignd0sig; //!
+  std::vector<std::vector<float> > *m_TrackSignz0sig; //!
+  std::vector<std::vector<bool> > *m_V0Track; //!
+  std::vector<std::vector<unsigned char> > *m_nPixelHits; //!
+  std::vector<std::vector<unsigned char> > *m_nSCTHits; //!
+  std::vector<std::vector<unsigned char> > *m_nPixelHoles; //!
+  std::vector<std::vector<unsigned char> > *m_nSCTHoles; //!
+  std::vector<std::vector<unsigned char> > *m_nPixelDead; //!
+  std::vector<std::vector<unsigned char> > *m_nSCTDead; //!
+  std::vector<std::vector<unsigned char> > *m_nPixelShared; //!
+  std::vector<std::vector<unsigned char> > *m_nSCTShared; //!
+  std::vector<std::vector<unsigned char> > *m_nIBLHits; //!
+  std::vector<std::vector<unsigned char> > *m_nBLHits; //!
   
   std::vector<std::vector<double> > *m_TruthPt; //!
   std::vector<std::vector<double> > *m_TruthEta; //!
